@@ -1,0 +1,22 @@
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25rem;
+    justify-content: center;
+}
+.card {
+    width: 18rem;
+}
+
+button {
+    background-color: #2e51a2;
+    color: white;
+}
+
+button:hover {
+    background-color: #3e6ddc;
+}
+
+button:active {
+    background-color: rgb(18, 42, 99);
+}

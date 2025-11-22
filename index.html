@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Placeholder</title>
+        <!--FAVICON-->
+        <link 
+            rel="icon" 
+            type="image/x-icon" 
+            href="imgs/placeholder.png"
+        />
+        <!-- Required meta tags -->
+        <meta 
+            charset="utf-8"
+        />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link 
+            rel="stylesheet" 
+            href="style.css"
+        />
+    </head>
+
+    <body>
+        <div id="app">
+            <div>High Score: {{ highScore }}<br>Streak: {{ streak }}</div>
+            <div v-if="animePair" class="cards-container">
+                <div v-for="anime in animePair" :key="anime.mal_id">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <a :href="anime.url" target="_blank">{{ anime.title_english || anime.title }}</a>
+                            </div>
+                            <div class="card-subtitle">
+                                {{ anime.score }}/10
+                            </div>
+                            <br> <!--Breaks Title and Image-->
+                            <img :src="anime.images.jpg.large_image_url" alt="Random anime's poster" class="img-fluid">
+                        </div>
+                        <button @click="guessOverUnder(anime, animePair[index === 0 ? 1 : 0])">Guess</button>
+                    </div>
+                </div>
+            </div>
+            <div v-else="loading">Loading...</div>
+        </div>
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>
