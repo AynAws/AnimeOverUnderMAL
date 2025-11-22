@@ -27,6 +27,7 @@ window.app = Vue.createApp({
                 localStorage.setItem('highScore', this.streak)
                 this.highScore = this.streak
             }
+            await new Promise(res => setTimeout(res, 1200)) // the amount of seconds it waits for the DOM to update before running getTwoAnime
             await this.getTwoAnime()
             this.hint = false
             this.guessed = false
