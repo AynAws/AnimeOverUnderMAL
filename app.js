@@ -14,6 +14,9 @@ window.app = Vue.createApp({
         this.highScore = Number(localStorage.getItem('highScore')) || 0
     },
     methods: {
+        delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms * 1000))
+        },
         getHint(anime) {
             this.hint = true
         },
@@ -41,17 +44,11 @@ window.app = Vue.createApp({
                 console.error("Jikan API error: ", err)
             }
         },
-        async getRandomAnimeFiltered(maxRetries = 5) {
+        async getRandomAnimeFiltered(maxRetries = 15) {
             for (let i=0; i < maxRetries; i++) {
-                const candidates = await Promise.all([
-                    this.getRandomAnime(),
-                    this.getRandomAnime(),
-                    this.getRandomAnime(),
-                    this.getRandomAnime(),
-                    this.getRandomAnime()
-                ])
-                const anime = candidates.find(a => a.scored_by >= 10000 && a.score != null)
-                if (anime) return anime
+                const anime = await this.getRandomAnime()
+                if (anime && anime.scored_by >= 10000 && anime.score != null) return anime
+                await this.delay(3)
             }
             return await this.getRandomAnime()
         },
