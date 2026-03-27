@@ -49,7 +49,7 @@ window.app = Vue.createApp({
             for (let i=0; i < maxRetries; i++) {
                 const anime = await this.getRandomAnime()
                 if (anime && anime.scored_by >= 10000 && anime.score != null) return anime
-                await this.delay(3)
+                await this.delay(3.101)
             }
             return await this.getRandomAnime()
         },
