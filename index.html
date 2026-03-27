@@ -32,7 +32,7 @@
     <body>
         <div id="app">
             <div>High Score: {{ highScore }}<br>Streak: {{ streak }}</div>
-            <div v-if="animePair" class="cards-container">
+            <div v-if="!loading" class="cards-container">
                 <div v-for="(anime, index) in animePair" :key="anime.mal_id">
                     <div class="card">
                         <div class="card-body">
@@ -51,7 +51,11 @@
                     </div>
                 </div>
             </div>
-            <div v-else="loading">Loading...</div>
+            <div v-else class="loader-container">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
         </div>
             <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         <script src="app.js"></script>

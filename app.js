@@ -6,7 +6,8 @@ window.app = Vue.createApp({
             highScore: 0,
             streak: 0,
             hint: false,
-            guessed: false
+            guessed: false,
+            lastRequestTime: 0
         }
     },
     mounted() {
@@ -14,8 +15,18 @@ window.app = Vue.createApp({
         this.highScore = Number(localStorage.getItem('highScore')) || 0
     },
     methods: {
-        delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms * 1000))
+        async rateLimitedFetch(url) {
+            const now = Date.now()
+            const diff = now - this.lastRequestTime
+
+            const minDelay = 3000
+
+            if (diff < minDelay) {
+                await new Promise(r => setTimeout(r, minDelay, - diff))
+            }
+
+            this.lastRequestTime = Date.now()
+            return fetch(url)
         },
         getHint(anime) {
             this.hint = true
@@ -37,7 +48,7 @@ window.app = Vue.createApp({
         },
         async getRandomAnime() {
             try {
-                const res = await fetch('https://api.jikan.moe/v4/random/anime')
+                const res = await this.rateLimitedFetch('https://api.jikan.moe/v4/random/anime')
                 const json = await res.json()
                 return json.data
             }
@@ -48,8 +59,8 @@ window.app = Vue.createApp({
         async getRandomAnimeFiltered(maxRetries = 15) {
             for (let i=0; i < maxRetries; i++) {
                 const anime = await this.getRandomAnime()
+                console.log(`Fetched ${anime.title_english || anime.title}`)
                 if (anime && anime.scored_by >= 10000 && anime.score != null) return anime
-                await this.delay(3.101)
             }
             return await this.getRandomAnime()
         },
